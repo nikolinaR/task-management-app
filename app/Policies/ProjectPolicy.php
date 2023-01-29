@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Project;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -41,7 +42,7 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role_id == Role::IS_ADMIN;
     }
 
     /**
@@ -53,7 +54,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        //
+        return $user->role_id == Role::IS_ADMIN;
     }
 
     /**
@@ -65,7 +66,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        //
+        return $user->role_id == Role::IS_ADMIN;
     }
 
     /**

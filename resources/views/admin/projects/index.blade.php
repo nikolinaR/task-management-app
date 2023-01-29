@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 @section('content')
-    <a href="/projects/create" class="btn btn-teal margin-bottom-30">Create new project</a>
 
+    @can('create', $project)
+        <a href="/projects/create" class="btn btn-teal margin-bottom-30">Create new project</a>
+    @endcan
     <div id="panel-2" class="panel panel-default">
         <div class="panel-heading">
             <span class="title elipsis"><strong>HOVER TABLE</strong></span>
@@ -22,9 +24,8 @@
                         <th>Status</th>
                         <th>Start Date</th>
                         <th>Due Date</th>
-                        <th>By User</th>
+                        <th>Created By</th>
                         <th>Category</th>
-                        <th colspan="2">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,24 +37,36 @@
                             <td>{{$project->end_date}}</td>
                             <td>{{$project->getUser->name}}</td>
                             <td>{{$project->getCategory->name}}</td>
-                            <td>
-                                <form action="{{ url('projects', [$project->id, 'edit']) }}">
-                                    <button class="btn btn-sm btn-yellow">
-                                        <i class="fa fa-edit"></i><span>Edit</span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="{{ url('projects', [$project->id, 'delete']) }}">
-                                    <button class="btn btn-3d btn-sm btn-red">
-                                        <i class="fa fa-trash"></i><span>Delete</span>
-                                    </button>
-                                </form>
-                            </td>
+                            @can('update', $project)
+                                <td>
+                                    <form action="{{ url('projects', [$project->id, 'edit']) }}">
+                                        <button class="btn btn-sm btn-yellow">
+                                            <i class="fa fa-edit"></i><span>Edit</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            @endcan
+                            @can('delete', $project)
+                                <td>
+                                    <form action="{{ url('projects', [$project->id]) }}" method="post">
+                                        {{csrf_field()}}
+                                        {{method_field('DELETE')}}
+                                        <button class="btn btn-3d btn-sm btn-red">
+                                            <i class="fa fa-trash"></i><span>Delete</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+
+                @if ($projects->links()->paginator->hasPages())
+                    <div class="d-flex justify-content-center">
+                        {!! $projects->links() !!}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

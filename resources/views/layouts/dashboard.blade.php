@@ -38,11 +38,18 @@
                         <i class="main-icon fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
+                @can('admin-view')
                 <li>
                     <a href="{{url('categories/')}}">
-                        <i class="main-icon fa fa-university"></i> <span>Categories</span>
+                        <i class="main-icon fa fa-list-alt"></i> <span>Categories</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{url('users/')}}">
+                        <i class="main-icon fa fa-user"></i> <span>Users</span>
+                    </a>
+                </li>
+                @endcan
                 <li>
                     <a href="{{url('projects/')}}">
                         <i class="main-icon fa fa-folder-open-o"></i> <span>Projects</span>
@@ -53,11 +60,7 @@
                         <i class="main-icon fa fa-tasks"></i> <span>Tasks</span>
                     </a>
                 </li>
-                <li><!-- dashboard -->
-                    <a href="{{url('users/')}}">
-                        <i class="main-icon fa fa-user"></i> <span>Users</span>
-                    </a>
-                </li>
+
             </ul>
         </nav>
         <span id="asidebg"><!-- aside fixed background --></span>

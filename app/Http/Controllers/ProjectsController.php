@@ -7,6 +7,7 @@ use App\Models\Categories;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 class ProjectsController extends Controller
@@ -16,12 +17,12 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Project $project)
     {
-        $projects = Project::all();
+        $projects = Project::orderBy('end_date', 'DESC')->paginate(5);
         $categories = Categories::all();
-        $data = ['projects' => $projects, 'categories' => $categories];
-        return view('admin.projects.index')->with($data);
+        $data = ['projects' => $projects, 'categories' => $categories, 'project' => $project];
+        return view('admin.projects.index', compact('projects'))->with($data);
     }
 
     /**

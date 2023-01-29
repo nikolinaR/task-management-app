@@ -17,4 +17,11 @@ class Role extends Model
     {
         return $this->hasMany('App\Models\User', 'role_id', 'id');
     }
+
+    public const IS_ADMIN = 1;
+    public const IS_MANAGER = 2;
+    public const IS_USER = 3;
+
+
+
 }

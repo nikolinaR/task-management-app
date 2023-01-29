@@ -20,19 +20,12 @@ class Task extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function getProject()
     {
         return $this->belongsTo('App\Models\Project', 'project_id', 'id');
     }
-
-
-
-
-
-
-
 
 }

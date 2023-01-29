@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Role;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -18,7 +19,7 @@ class TaskPolicy
      */
     public function viewAny(User $user)
     {
-        //
+//        return $user->role_id == Role::IS_ADMIN;
     }
 
     /**
@@ -41,7 +42,8 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        //
+//        return $user->role_id == Role::IS_ADMIN;
+        return in_array($user->role_id, [Role::IS_ADMIN, Role::IS_MANAGER]);
     }
 
     /**
@@ -53,7 +55,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        //
+        return in_array($user->role_id, [Role::IS_ADMIN, Role::IS_MANAGER]);
     }
 
     /**
@@ -65,7 +67,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        //
+        return in_array($user->role_id, [Role::IS_ADMIN, Role::IS_MANAGER]);
     }
 
     /**

@@ -10,43 +10,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\Console\Input\Input;
 
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Task $task)
     {
-        $tasks = Task::all();
-        return view('admin.tasks.index')->with(['tasks' => $tasks]);
+        $tasks = Task::with('users')->get();
+        $taskenum = TaskStatusEnum::cases();
+        // $user = User::all()->first();
+        $user = Auth::user();
+        return view('tasks.index')->with(['tasks' => $tasks, 'taskenum' => $taskenum, 'user' => $user, 'task' => $task]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
+        $this->authorize('create', Task::class);
         $tasks = Task::with('users')->get();
         $taskenum = TaskStatusEnum::cases();
         $project = Project::all();
         $users = User::with('getTask')->get();
         $data = ['tasks' => $tasks, 'taskenum' => $taskenum, 'project' => $project, 'users' => $users];
-        return view('admin.tasks.create')->with($data);
+        return view('tasks.create')->with($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
-     */
     public function store(Request $request)
     {
+        $this->authorize('create', Task::class);
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'description' => 'required|min:10',
@@ -69,68 +59,48 @@ class TasksController extends Controller
         $tasks->project_id = $request->project_id;
         $tasks->user_id = $request->user_id;
 
-//dd($request->all());
+        //dd($request->all());
 
         $tasks->save();
 
-        $tasks->users()->attach($request->task_id);
+//        $tasks->users()->attach($request->task_id);
 
         return redirect()->back()->with('success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function edit($id)
-    {
-        $task = Task::with('users')->get();
-        $tasks = Task::FindOrFail($id);
+        $this->authorize('update', $task);
         $users = User::all();
         $projects = Project::all();
         $taskenum = TaskStatusEnum::cases();
-        $data = ['users' => $users, 'tasks' => $tasks, 'projects' => $projects, 'taskenum' => $taskenum];
-        return view('admin.tasks.edit', compact('task'))->with($data);
+        $data = ['users' => $users, 'projects' => $projects, 'taskenum' => $taskenum];
+        return view('tasks.edit', compact('task'))->with($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request,Task $task)
     {
-        $task = Task::FindOrFail($id);
+        $this->authorize('update', $task);
+    //  $task = Task::FindOrFail($id);
         $task->fill($request->all())->save();
-        $task->users()->sync($request->task_id);
+//        $task->users()->sync($request->task_id);
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function updateStatus(Request $request , $id)
     {
-        $task = Task::FindOrFail($id);
+        $data = Task::find($id);
+        $data->status = $request->status;
+        $data->save();
+        return redirect()->back();
+    }
+
+
+    public function destroy(Task $task)
+    {
+        $this->authorize('delete', $task);
         $task->delete();
         return redirect()->back();
     }
+
 }

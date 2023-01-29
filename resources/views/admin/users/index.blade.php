@@ -37,7 +37,9 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="{{ url('users', [$user->id, 'delete']) }}">
+                                <form action="{{ url('users', [$user->id]) }}" method="post">
+                                    {{csrf_field()}}
+                                    {{method_field('DELETE')}}
                                     <button class="btn btn-3d btn-sm btn-red">
                                         <i class="fa fa-trash"></i><span>Delete</span>
                                     </button>

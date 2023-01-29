@@ -6,7 +6,7 @@
                 <strong>ADD NEW PROJECT</strong>
             </div>
             <div class="panel-body">
-                <form class="" action="{{url("/projects")}}" method="post" data-success="Sent! Thank you!" data-toastr-position="top-right">
+                <form class="validate" action="{{url("/projects")}}" method="post" data-success="Sent! Thank you!" data-toastr-position="top-right">
                     {{csrf_field()}}
                     <fieldset>
 
