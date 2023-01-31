@@ -40,6 +40,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12">
@@ -47,8 +48,9 @@
                                         <label for="user_id">Assign to *</label>
                                         <select id="user_id" name="user_id"
                                                 class="form-control selectpicker @error('user_id') is-invalid @enderror">
-                                            @foreach($users as $user)
-                                                <option value="{{ $user->id }}"> {{ $user->name }}</option>
+                                            <option value="">select</option>
+                                        @foreach($users as $user)
+                                                <option value="{{ $user['id'] }}"> {{ $user['name'] }}</option>
                                             @endforeach
                                         </select>
                                         @error('user_id')
@@ -112,19 +114,6 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-12 col-sm-12">
-                                    <label for="user_id">Created by</label>
-                                    <input disabled type="text"  id="user_id" placeholder="{{ Auth::user()->name }}"
-                                           class="@error('user_id') is-invalid @enderror form-control" required>
-                                    <input type="hidden" value="{{ Auth::user()->id}}" name="user_id">
-                                    @error('user_id')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                     </fieldset>
                     <div class="row">
                         <div class="col-md-12">

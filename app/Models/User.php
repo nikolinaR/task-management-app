@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
     ];
 
     /**
@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function getTask()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany('App\Models\Task', 'tasks_id', 'id');
     }
 }

@@ -6,7 +6,7 @@
                 <strong>ADD NEW PROJECT</strong>
             </div>
             <div class="panel-body">
-                <form class="validate" action="{{url("/projects")}}" method="post" data-success="Sent! Thank you!" data-toastr-position="top-right">
+                <form class="" action="{{url("/projects")}}" method="post" data-success="Sent! Thank you!" data-toastr-position="top-right">
                     {{csrf_field()}}
                     <fieldset>
 
@@ -55,25 +55,19 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12">
-                                    <label for="user_id">Created By</label>
-                                    <select id="user_id" name="user_id" class="form-control  @error('user_id') is-invalid @enderror">
-                                        <option value="">Select User</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                    @if($user->id === Auth::user()->id) selected @endif>{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="user_id">Created by</label>
+                                    <input disabled type="text"  id="user_id" placeholder="{{ Auth::user()->name }}"
+                                           class="@error('user_id') is-invalid @enderror form-control" required>
+                                    <input type="hidden" value="{{ Auth::user()->id}}" name="user_id">
                                     @error('user_id')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12">

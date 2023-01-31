@@ -8,12 +8,9 @@
             <span class="title elipsis"><strong>TASKS TABLE</strong></span>
             <!-- right options -->
             <ul class="options pull-right list-inline">
-                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse"
-                       data-placement="bottom"></a></li>
-                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen"
-                       data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm"
-                       data-confirm-message="Are you sure you want to remove this panel?" data-toggle="tooltip"
+                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="Are you sure you want to remove this panel?" data-toggle="tooltip"
                        title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
             </ul>
         </div>
@@ -22,9 +19,9 @@
                 <table class="table table-hover table-vertical-middle nomargin">
                     <thead>
                     <tr>
-                        <th> users</th>
                         <th>Title</th>
                         <th>id</th>
+                        <th>user</th>
                         <th>Status</th>
                         <th>Project</th>
                         <th>Start Date</th>
@@ -33,15 +30,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($user->getTask as $task)
+                @foreach($tasks as $task)
+                    @if( Auth::user()->role_id == 1 || Auth::user()->id == $task->user_id)
                         <tr>
-                            <td>
-                                {{--                                @foreach($task->users as $user)--}}
-                                {{--                                    {{$user->name}}--}}
-                                {{--                                @endforeach--}}
-                            </td>
                             <td>{{$task->title}}</td>
                             <td>{{$task->id}}</td>
+                            <td>{{$task->users->name}}</td>
                             <td>
 								<span class="label label-sm label-success
                                      @if($task->status == 'started')
@@ -77,7 +71,7 @@
                             @endcan
 
                             <td>
-                                <button class="btn btn-sm btn-purple" data-toggle="modal"
+                                <button class="btn btn-sm btn-purple margin-bottom-30" data-toggle="modal"
                                         data-target="#example{{$task->id}}">
                                     <i class="fa fa-refresh"></i><span>Update</span>
                                 </button>
@@ -123,7 +117,8 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @endif
+                @endforeach
                     </tbody>
                 </table>
             </div>

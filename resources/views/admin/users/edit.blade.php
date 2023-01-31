@@ -34,18 +34,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-12 col-sm-12">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" value="{{old('password', $users->password)}}"
-                                           class="@error('password') is-invalid @enderror form-control required">
-                                    @error('password')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <div class="form-group">

@@ -2,12 +2,10 @@
 @section('content')
     <div class="col-md-10">
         <div class="panel panel-default">
-
             <div class="panel-heading panel-heading-transparent">
                 <strong>EDIT TASK </strong>
             </div>
             <div class="panel-body">
-
                 <form class="" action="{{ url('/tasks', [$task->id]) }}"  method="post" data-success="Sent! Thank you!" data-toastr-position="top-right">
                     {{csrf_field()}}
                     {{method_field('PUT')}}
@@ -44,14 +42,14 @@
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12">
                                     <div class="">
-                                        <label for="task_id">Assign to *</label>
-                                        <select id="task_id" name="task_id[]" multiple class="form-control selectpicker @error('task_id') is-invalid @enderror">
+                                        <label id="user_id">Assign to *</label>
+                                        <select id="user_id" name="user_id"  class="form-control  @error('user_id') is-invalid @enderror" required>
+                                            <option value="">select user</option>
                                             @foreach($users as $user)
-
-                                                <option value="{{ $user->id }}" > {{ $user->name }}</option>
+                                                <option value="{{ $user->id }}" {{$user->id == $task->user_id ? 'selected' : ''}}> {{ $user->name }}</option>
                                             @endforeach
                                         </select>
-                                        @error('task_id')
+                                        @error('user_id')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -115,19 +113,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-12 col-sm-12">
-                                    <label for="user_id">Created by</label>
-                                    <input  disabled type="text" id="user_id" placeholder="{{ Auth::user()->name }}"
-                                            class="@error('user_id') is-invalid @enderror form-control ">
-                                    <input type="hidden" value="{{ Auth::user()->id}}" name="user_id">
-                                    @error('user_id')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                     </fieldset>
                     <div class="row">
                         <div class="col-md-12">
@@ -136,7 +121,6 @@
                             </button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

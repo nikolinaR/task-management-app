@@ -29,7 +29,7 @@ class TasksController extends Controller
         $tasks = Task::with('users')->get();
         $taskenum = TaskStatusEnum::cases();
         $project = Project::all();
-        $users = User::with('getTask')->get();
+        $users = User::all();
         $data = ['tasks' => $tasks, 'taskenum' => $taskenum, 'project' => $project, 'users' => $users];
         return view('tasks.create')->with($data);
     }
@@ -47,7 +47,7 @@ class TasksController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/tasks/create')->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $tasks = new Task();
@@ -65,7 +65,7 @@ class TasksController extends Controller
 
 //        $tasks->users()->attach($request->task_id);
 
-        return redirect()->back()->with('success');
+        return redirect('/tasks');
     }
 
     public function edit(Task $task)
@@ -102,5 +102,7 @@ class TasksController extends Controller
         $task->delete();
         return redirect()->back();
     }
+
+//
 
 }

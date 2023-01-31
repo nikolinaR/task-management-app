@@ -7,7 +7,7 @@
             </div>
             <div class="panel-body">
                 {{--                <form class="validate" >--}}
-                <form class="" action="{{ url('/projects', [$project->id]) }}" method="post"
+                <form class="validate" action="{{ url('/projects', [$project->id]) }}" method="post"
                       data-success="Sent! Thank you!" data-toastr-position="top-right">
                     {{csrf_field()}}
                     {{method_field('PUT')}}

@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 class ProjectsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
+
     public function index(Project $project)
     {
         $projects = Project::orderBy('end_date', 'DESC')->paginate(5);
@@ -25,11 +21,6 @@ class ProjectsController extends Controller
         return view('admin.projects.index', compact('projects'))->with($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $projects = Project::all();
@@ -41,12 +32,6 @@ class ProjectsController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -59,7 +44,7 @@ class ProjectsController extends Controller
             'status' => ['required', new Enum(ProjectStatusEnum::class)]
         ]);
         if ($validator->fails()) {
-            return redirect('/projects/create')->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         $project = new Project();
         $project->title = $request->title;
@@ -70,26 +55,10 @@ class ProjectsController extends Controller
         $project->category_id = $request->category_id;
         $project->status = $request->status;
         $project->save();
-        return redirect()->back();
+        return redirect('/projects');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $project = Project::FindOrFail($id);
@@ -100,27 +69,13 @@ class ProjectsController extends Controller
         return view('admin.projects.edit')->with($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $project = Project::FindOrFail($id);
         $project->fill($request->all())->save();
         return redirect()->back()->withInput();
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $project = Project::FindOrFail($id);

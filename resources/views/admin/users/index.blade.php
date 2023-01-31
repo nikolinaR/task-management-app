@@ -29,6 +29,7 @@
                         <tr>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->getUserRole->name}}</td>
                             <td>
                                 <form action="{{ url('users', [$user->id, 'edit']) }}">
                                     <button class="btn btn-sm btn-yellow">
